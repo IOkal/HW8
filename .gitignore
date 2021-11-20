@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# API Keys
+hackwestern8-0d3d6c2ee2f1.json
+
 # dependencies
 /node_modules
 /.pnp
