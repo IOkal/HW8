@@ -11,9 +11,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Route that receives a POST request to /sms
 app.post('/sms', function (req, res) {
-  const body = req.body.Body;
+  const phonenumber = req.query.phoneNumber;
+  const fileURL = req.query.fileURL;
   res.set('Content-Type', 'text/plain');
-  res.send('You sent: ${body} to Express');
+  res.send(`You sent: ${fileURL} to Express`);
 });
 
 // Tell our app to listen on port 3000
