@@ -5,7 +5,7 @@ hackwestern8-0d3d6c2ee2f1.json
 
 # dependencies
 /node_modules
-backend/node_modules
+backend/node_modules/
 www/node_modules
 /.pnp
 .pnp.js
