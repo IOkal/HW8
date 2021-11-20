@@ -62,12 +62,12 @@ const Profile = () => {
                                 value={x.preference}
                                 onChange={e => handlePreferenceChange(e, i)}
                             />
-                            <div className="btn-box">
-                                {setPreferenceList.length - 1 === i && <button onClick={handleAddPreference}>+</button>}
-                            </div>
                         </div>
                     );
                 })}
+                <div className="btn-box">
+                    <button onClick={handleAddPreference}>+</button>
+                </div>
 
                 {restrictionList.map((x, i) => {
                     return (
@@ -78,12 +78,12 @@ const Profile = () => {
                                 value={x.restriction}
                                 onChange={e => handleRestrictionChange(e, i)}
                             />
-                            <div className="btn-box">
-                                {setRestrictionList.length - 1 === i && <button onClick={handleAddRestriction}>+</button>}
-                            </div>
                         </div>
                     );
                 })}
+                <div className="btn-box">
+                    <button onClick={handleAddRestriction}>+</button>
+                </div>
             {/* </form> */}
         </div>
     )

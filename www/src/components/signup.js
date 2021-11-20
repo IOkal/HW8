@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
+import { SignupSchema } from '../schemas/signupSchema';
 
-const Login = () => {
-    const [creds, setCreds] = useState()
+const Signup = () => {
+    const [creds, setCreds] = useState({})
 
     //Fire whenever credentials field is updated
     useEffect(() => {
@@ -14,13 +15,22 @@ const Login = () => {
     return (
         <div>
             <Formik
-                initialValues={{username: '', password: ''}}
+                initialValues={{email: '', password: '', username: ''}}
+                validationSchema={SignupSchema}
                 onSubmit={(values) => {
                     console.log(values)
-                    setCreds({username: values.username, password: values.password})
+                    setCreds({email: values.email, password: values.password, username: values.username})
                 }}>
                 {props => (
                     <div>
+                        <input
+                            placeholder='Email'
+                            onChangeText={props.handleChange('email')}
+                            onBlur={props.handleBlur('email')} 
+                            value={props.values.email}
+                        />
+                        {props.touched.email && props.errors.email}
+
                         <input
                             placeholder='Username'
                             onChangeText={props.handleChange('username')}
@@ -44,4 +54,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Signup
