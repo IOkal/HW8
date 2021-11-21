@@ -22,7 +22,7 @@ async function detectIMGText() {
 }
 
 async function detectPDFText(bucketName) {
-    
+
     // Imports the Google Cloud client libraries
     const vision = require('@google-cloud/vision');
     // Creates a client
