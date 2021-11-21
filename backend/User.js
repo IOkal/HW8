@@ -23,7 +23,9 @@ router.post('/signup', async(req, res) => {
     } else {
       //Create the new user with phone number
       var newUser = await db.collection('Users').add({
-        phone: req.query.phone
+        phone: req.query.phone,
+        firstName: req.query.firstname,
+        lastName: req.query.lastname
       })
       return res.json({"error": false, "messages": {uid: newUser.id}})
     }

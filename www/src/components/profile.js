@@ -1,29 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+import { addUserDetails, getUserDetails} from '../controller/userdata';
+import { getUID } from '../controller/auth';
+import {isUserAuthenticated, isUserSignedUp} from '../controller/auth'
 
-const Profile = () => {
+const Profile = (props) => {
     const [name, setName] = useState({firstName: '', lastName: ''})
+    const [uid, setUID] = useState('')
     const [restrictionList, setRestrictionList] = useState([{ restriction: ""}]);
     const [preferenceList, setPreferenceList] = useState([{ preference: ""}]);
+    const [submitted, setSubmitted] = useState(false)
+    const [authStatus, setAuthStatus] = useState(props.authStatus)
 
     // useEffect(() => {
-
+    //     (async () => {
+    //         setAuthStatus(isUserAuthenticated())
+    //         console.log(authStatus)
+    //         setUID(getUID());
+    //         if (uid !== '') {
+    //             var userDetails = await getUserDetails(uid)
+    //             console.log(userDetails)
+    //         }
+    //     })();
     // }, [])
 
     // handle input change
     const handlePreferenceChange = (e, index) => {
-        e.preventDefault();
-        const { name, value } = e.target;
-        const list = [...setPreferenceList];
-        list[index][name] = value;
-        setPreferenceList(list);
+        // e.preventDefault();
+        // const { name, value } = e.target;
+        // const list = [...setPreferenceList];
+        // list[index][name] = value;
+        // setPreferenceList(list);
     };
 
     const handleRestrictionChange = (e, index) => {
-        e.preventDefault();
-        const { name, value } = e.target;
-        const list = [...restrictionList];
-        list[index][name] = value;
-        setRestrictionList(list);
+        // e.preventDefault();
+        // const { name, value } = e.target;
+        // const list = [...restrictionList];
+        // list[index][name] = value;
+        // setRestrictionList(list);
       };
    
     // handle click event of the Add button
@@ -44,79 +59,73 @@ const Profile = () => {
         }));
     }
 
-    return (
-        <div class = "container">
-            <div class = "row center-align">
-                <div class="col s12">
-                    <form class="col s6 offset-s3">
-                        <h3>Update Profile</h3>
-                        <div class="divider"></div>
-                        <div class="row">
-                            <div class="section">
-                                <div class="input-field col s6">
-                                    <input
-                                        name="firstName"
-                                        placeholder="First Name"
-                                        value={name.firstName}
-                                        onChange={e => handleNameChange(e)}
-                                    />
-                                </div>
-                                <div class="input-field col s6">
-                                    <input
-                                        name="lastName"
-                                        placeholder="Enter Last Name"
-                                        value={name.lastName}
-                                        onChange={e => handleNameChange(e)}
-                                    />
-                                </div>
-                                <div>
-                                    <></>
-                                </div>
-                            </div>
+    const handleSubmit = (e) => {
+        if (uid !== '') {
+            addUserDetails(uid, restrictionList, preferenceList)
+            setSubmitted(true)
+        }
+    }
 
-                            <div class="section" style = {{marginTop: "100px"}}>
-                                <h5>Dietary Preferences</h5>
-                                {preferenceList.map((x, i) => {
-                                    return (
-                                        <div class="input-field col s12">                                
-                                            <input
-                                                name="preference"
-                                                placeholder="Enter preference"
-                                                value={x.preference}
-                                                onChange={e => handlePreferenceChange(e, i)}
-                                            />
+    return ( 
+        <div>
+        {
+            !submitted ? (
+                <div class = "container">
+                    <div class = "row center-align">
+                        <div class="col s12">
+                            <form class="col s6 offset-s3" onSubmit={handleSubmit}>
+                                <h3>Customize Your Profile</h3>
+                                <div class="row">
+                                    <div class="section" style = {{marginTop: "100px"}}>
+                                        <h5>Dietary Preferences</h5>
+                                        {preferenceList.map((x, i) => {
+                                            return (
+                                                <div class="input-field col s12">                                
+                                                    <input
+                                                        name="preference"
+                                                        placeholder="Enter preference"
+                                                        // value={x.preference}
+                                                        onChange={e => handlePreferenceChange(e, i)}
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                        <div>
+                                            <a class="btn-floating btn-small waves-effect waves-light red" onClick={handleAddPreference}><i class="material-icons">add</i></a>
                                         </div>
-                                    );
-                                })}
-                                <div>
-                                    <a class="btn-floating btn-small waves-effect waves-light red" onClick={handleAddPreference}><i class="material-icons">add</i></a>
-                                </div>
-                            </div>
+                                    </div>
 
-                            <div class="section">
-                                <h5>Dietary Restrictions</h5>
-                                {restrictionList.map((x, i) => {
-                                    return (
-                                        <div class="input-field col s12">                                
-                                            <input
-                                                name="restriction"
-                                                placeholder="Enter restriction"
-                                                value={x.restriction}
-                                                onChange={e => handleRestrictionChange(e, i)}
-                                            />
+                                    <div class="section">
+                                        <h5>Dietary Restrictions</h5>
+                                        {restrictionList.map((x, i) => {
+                                            return (
+                                                <div class="input-field col s12">                                
+                                                    <input
+                                                        name="restriction"
+                                                        placeholder="Enter restriction"
+                                                        // value={x.restriction}
+                                                        onChange={e => handleRestrictionChange(e, i)}
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                        <div>
+                                            <a class="btn-floating btn-small waves-effect waves-light red" onClick={handleAddRestriction}><i class="material-icons">add</i></a>
                                         </div>
-                                    );
-                                })}
-                                <div>
-                                    <a class="btn-floating btn-small waves-effect waves-light red" onClick={handleAddRestriction}><i class="material-icons">add</i></a>
+                                        <div class = "section">
+                                            <button class="btn waves-effect waves-light" type="submit">Save Profile</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-       
+            ) : (
+                <Redirect to='/Menu'/>
+            )
+        }
+        </div> 
     )
 }
 

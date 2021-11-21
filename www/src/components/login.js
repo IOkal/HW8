@@ -1,64 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { LoginSchema } from '../schemas/loginSchema';
+import { logIn } from '../controller/auth';
+import Menu from './menu';
 
-const Login = () => {
-    const [creds, setCreds] = useState({})
+const Login = (props) => {
+    const [phone, setPhone] = useState('')
+    const {authStatus} = props;
 
     //Fire whenever credentials field is updated
     useEffect(() => {
-        if (creds !== undefined) {
-        
+        if (phone !== '') {
+            logIn(phone)
         }
-    }, [creds])
+    }, [phone])
 
     return (
-        <div class = "container">
-            <div class = "row center-align">
-                <div class="col s6 offset-s3">
-                    <Formik
-                        initialValues={{username: '', password: ''}}
-                        validationSchema={LoginSchema}
-                        onSubmit={(values) => {
-                            console.log(values)
-                            setCreds({username: values.email, password: values.password})
-                        }}>
-                        {props => (
-                            <div class="row">
-                                <h4>Sign In to Your Account</h4>
-                                <div class="divider"></div>
-                                <div class="section">
-                                    <div class="input-field col s12">
-                                        <input
-                                            placeholder='Username'
-                                            onChangeText={props.handleChange('username')}
-                                            onBlur={props.handleBlur('username')} 
-                                            value={props.values.username}
-                                        />
-                                    </div>
-                                    <div>
-                                        {props.touched.username && props.errors.username}
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <input
-                                            placeholder='Password'
-                                            onChangeText={props.handleChange('password')}
-                                            onBlur={props.handleBlur('password')} 
-                                            value={props.values.password}
-                                        />
-                                    </div>
-                                    <div>
-                                        {props.touched.password && props.errors.password}
-                                    </div>
-                                    <div class = "section">
-                                        <button class="btn waves-effect waves-light" type="submit" name="action" onClick={props.handleSubmit}>Log In</button>
-                                    </div>
-                                </div>
+        <div>
+            {
+                !authStatus ? (
+                    <div class = "container">
+                        <div class = "row center-align">
+                            <div class="col s6 offset-s3">
+                                <Formik
+                                    initialValues={{phone: ''}}
+                                    validationSchema={LoginSchema}
+                                    onSubmit={(values) => {
+                                        console.log(values)
+                                        setPhone(values.phone)
+                                    }}>
+                                    {props => (
+                                        <div class="row">
+                                            <h4>Sign Back In</h4>
+                                            <div class="section">
+                                                <div class="input-field col s12">
+                                                    <input
+                                                        placeholder='Phone Number'
+                                                        onChange={props.handleChange('phone')}
+                                                        onBlur={props.handleBlur('phone')}
+                                                        value={props.values.phone}  
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class = "section">
+                                                <button class="btn waves-effect waves-light" type="submit" onSubmit={props.handleSubmit}>Sign in</button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </Formik>
                             </div>
-                        )}
-                    </Formik>
-                </div>
-            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <Menu/>
+                )
+            }
         </div>
     )
 }
