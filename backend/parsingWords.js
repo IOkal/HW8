@@ -36,9 +36,9 @@ function detectWords() {
         "vegan": ["meat", "pork", "beef", "steak", "chicken", "fish", "shrimp", "seafood", "bacon", "egg", "cheese", "milk"]
     };
 
-    var redList = ["pizza","Pizzas"];
-    var yellowList = ["pasta"];
-    var greenList = ["chicken"];
+    var redList = ["pork","Salami","salame","bacon","pancetta","ham", "prosciutto", "ribs", "gammon"];
+    var yellowList = ["mushroom","funghi"];
+    var greenList = ["pizza","pizzas"];
 
     var fs = require("fs");  
     var body2 = fs.readFileSync("../results_output-1-to-4.json", "UTF-8");  
