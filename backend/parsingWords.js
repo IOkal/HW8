@@ -36,7 +36,7 @@ async function downloadFile(fileName, destFileName) {
     );
 };
 
-async function detectWords() {  
+async function detectWords() {
     let json = {
         "width": 0,
         "height": 0,
@@ -77,6 +77,7 @@ async function detectWords() {
 
     for (var i = 0; i < body["responses"].length; i++) {
 
+
         var response = body["responses"][i];
         var pages = response["fullTextAnnotation"]["pages"];
 
@@ -105,7 +106,7 @@ async function detectWords() {
                     // console.log(word)
 
                     if (checkIfWordInList(word, redList)) {
-                        paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "R"});
+                        paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "R", "Page": i+1});
                         b = true;
                         break;
                     }
@@ -123,11 +124,11 @@ async function detectWords() {
                 };
 
                 if (numYellow > 0) {
-                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "Y"});
+                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "Y", "Page": i+1});
                 } else if (numGreen > 0) {
-                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "G"});
+                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "G", "Page": i+1});
                 } else {
-                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "N"});
+                    paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "N", "Page": i+1});
                 }
 
                 json["paragraphs"].push(paragraph);
