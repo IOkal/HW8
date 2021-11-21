@@ -10,6 +10,9 @@
 // function getSynonyms (word) {
 //     return mappings[word.lower()];
 // }
+bucketName = 'hackwestern8-twilio-menus';
+const {Storage} = require('@google-cloud/storage');
+const storage = new Storage();
 
 function checkIfWordInList (word, lst) {
 
@@ -22,7 +25,18 @@ function checkIfWordInList (word, lst) {
     return false;
 }
 
-function detectWords() {
+async function downloadFile(fileName, destFileName) {
+    const options = {
+        destination: destFileName,
+    };
+    // Downloads the file
+    await storage.bucket(bucketName).file(fileName).download(options);
+    console.log(
+        `gs://${bucketName}/${fileName} downloaded to ${destFileName}.`
+    );
+};
+
+async function detectWords() {  
     let json = {
         "width": 0,
         "height": 0,
@@ -43,7 +57,13 @@ function detectWords() {
     var greenList = ["pizza","pizzas"];
 
     var fs = require("fs");
-    var body2 = fs.readFileSync("../results_output-1-to-4.json", "UTF-8");
+
+    // Downloading JSON from Bucket
+    // Creates a client
+    const destFileName = './InitialOCR.json';
+
+    await downloadFile('results/output-1-to-4.json', destFileName).catch(console.error);
+    var body2 = fs.readFileSync("./InitialOCR.json", "UTF-8");
     var body = JSON.parse(body2);
     // console.log(body)
     // console.log(data);

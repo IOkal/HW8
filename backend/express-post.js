@@ -44,8 +44,6 @@ app.post('/sms', async (req, res) => {
     // await downloadFile(fileName, body)
     // const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
     // await delay(500);
-
-
     // Upload image to Bucket:
     // var filePath = './' + fileName;
     // await uploadFile(filePath, fileName).catch(console.error);
@@ -122,6 +120,7 @@ async function detectPDFText(fileName) {
   const destinationUri =
   filesResponse.responses[0].outputConfig.gcsDestination.uri;
   console.log('Json saved to: ' + destinationUri);
+  return;
 };
 
 async function detectIMGText(imageURL) {
