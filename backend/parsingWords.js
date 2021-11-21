@@ -24,6 +24,8 @@ function checkIfWordInList (word, lst) {
 
 function detectWords() {
     let json = {
+        "width": 0,
+        "height": 0,
         "paragraphs": []
     };
 
@@ -36,19 +38,22 @@ function detectWords() {
         "vegan": ["meat", "pork", "beef", "steak", "chicken", "fish", "shrimp", "seafood", "bacon", "egg", "cheese", "milk"]
     };
 
-    var redList = ["pork","Salami","salame","bacon","pancetta","ham", "prosciutto", "ribs", "gammon"];
-    var yellowList = ["mushroom","funghi"];
-    var greenList = ["pizza","pizzas"];
+    var redList = ["pizza"];
+    var yellowList = ["pasta"];
+    var greenList = ["chicken"];
 
-    var fs = require("fs");  
-    var body2 = fs.readFileSync("../results_output-1-to-4.json", "UTF-8");  
+    var fs = require("fs");
+    var body2 = fs.readFileSync("../results_output-1-to-4.json", "UTF-8");
     var body = JSON.parse(body2);
     // console.log(body)
-    // console.log(data);  
+    // console.log(data);
 
     // test file
     // const body = JSON.parse("../results_output-1-to-4.json");
     // console.log(body.responses[1].fullTextAnnotation.pages[0].blocks[0].paragraphs[0].words[0].symbols[0].text)
+
+    json.width = body["responses"][0]["fullTextAnnotation"]["pages"][0].width;
+    json.height = body["responses"][0]["fullTextAnnotation"]["pages"][0].height;
 
     for (var i = 0; i < body["responses"].length; i++) {
 
@@ -73,7 +78,9 @@ function detectWords() {
                 for (var w = 0; w < words.length; w++) {
                     var word = "";
                     var symbols = words[w]["symbols"];
-                    
+                    // console.log(symbols)
+
+                    console.log(symbols.length)
                     for (let s = 0; s < symbols.length; s++) {
                         word = word + symbols[s].text;
                     }
@@ -92,10 +99,7 @@ function detectWords() {
                     }
 
                 }
-                if (b){
-                    json["paragraphs"].push(paragraph);
-                    break;
-                }
+                if (b) break;
 
                 if (numYellow > 0) {
                     paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "Y"});
@@ -107,8 +111,8 @@ function detectWords() {
 
                 json["paragraphs"].push(paragraph);
                 fs.writeFile ("input.json", JSON.stringify(json), function(err) {
-                    if (err) throw err;
-                    // console.log('complete');
+                    // if (err) throw err;
+                    console.log('complete');
                     }
                 );
                 // console.log(JSON.stringify(json));
