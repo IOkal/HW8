@@ -38,9 +38,9 @@ function detectWords() {
         "vegan": ["meat", "pork", "beef", "steak", "chicken", "fish", "shrimp", "seafood", "bacon", "egg", "cheese", "milk"]
     };
 
-    var redList = ["pizza"];
-    var yellowList = ["pasta"];
-    var greenList = ["chicken"];
+    var redList = ["pork","Salami","salame","bacon","pancetta","ham", "prosciutto", "ribs", "gammon"];
+    var yellowList = ["mushroom","funghi"];
+    var greenList = ["pizza","pizzas"];
 
     var fs = require("fs");
     var body2 = fs.readFileSync("../results_output-1-to-4.json", "UTF-8");
@@ -78,9 +78,7 @@ function detectWords() {
                 for (var w = 0; w < words.length; w++) {
                     var word = "";
                     var symbols = words[w]["symbols"];
-                    // console.log(symbols)
 
-                    console.log(symbols.length)
                     for (let s = 0; s < symbols.length; s++) {
                         word = word + symbols[s].text;
                     }
@@ -99,7 +97,10 @@ function detectWords() {
                     }
 
                 }
-                if (b) break;
+                if (b){
+                    json["paragraphs"].push(paragraph);
+                    break;
+                };
 
                 if (numYellow > 0) {
                     paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "Y"});
@@ -111,8 +112,8 @@ function detectWords() {
 
                 json["paragraphs"].push(paragraph);
                 fs.writeFile ("input.json", JSON.stringify(json), function(err) {
-                    // if (err) throw err;
-                    console.log('complete');
+                    if (err) throw err;
+                    // console.log('complete');
                     }
                 );
                 // console.log(JSON.stringify(json));
