@@ -36,7 +36,7 @@ function detectWords() {
         "vegan": ["meat", "pork", "beef", "steak", "chicken", "fish", "shrimp", "seafood", "bacon", "egg", "cheese", "milk"]
     };
 
-    var redList = ["pizza"];
+    var redList = ["pizza","Pizzas"];
     var yellowList = ["pasta"];
     var greenList = ["chicken"];
 
@@ -72,10 +72,8 @@ function detectWords() {
                 var b = false;
                 for (var w = 0; w < words.length; w++) {
                     var word = "";
-                    var symbols = words[w];
-                    // console.log(symbols)
-
-                    // console.log(symbols.length)
+                    var symbols = words[w]["symbols"];
+                    
                     for (let s = 0; s < symbols.length; s++) {
                         word = word + symbols[s].text;
                     }
@@ -94,7 +92,10 @@ function detectWords() {
                     }
 
                 }
-                if (b) break;
+                if (b){
+                    json["paragraphs"].push(paragraph);
+                    break;
+                }
 
                 if (numYellow > 0) {
                     paragraph.push({"boundingBox": paragraphs[k].boundingBox, "Status": "Y"});
